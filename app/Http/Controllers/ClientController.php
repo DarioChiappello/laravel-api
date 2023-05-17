@@ -27,11 +27,16 @@ class ClientController extends Controller
 
     public function store(ClientRequest $request)
     {
-        $validateRequest = $this->clientService->validateRequest($request);
-
-        $client = $this->clientService->create($request->all());
-
-        return $this->successResponse($client);
+        try
+        {
+            $validateRequest = $this->clientService->validateRequest($request);
+            $client = $this->clientService->create($request->all());
+            return $this->successResponse($client);
+        }
+        catch(\Exception $ex)
+        {
+            return $this->errorResponse($ex);
+        }
     }
 
     public function show($client)
@@ -43,15 +48,28 @@ class ClientController extends Controller
 
     public function update(ClientRequest $request, $client)
     {
-        $validateRequest = $this->clientService->validateRequest($request);
-        $client = $this->clientService->update($client, $request->all());
-        return $this->successResponse($client);
+        try
+        {
+            $validateRequest = $this->clientService->validateRequest($request);
+            $client = $this->clientService->update($client, $request->all());
+            return $this->successResponse($client);
+        }
+        catch(\Exception $ex)
+        {
+            return $this->errorResponse($ex);
+        }
     }
 
     public function destroy($client)
     {
-        $client = $this->clientService->delete($client);
-
-        return $this->successResponse($client); 
+        try
+        {
+            $client = $this->clientService->delete($client);
+            return $this->successResponse($client); 
+        }
+        catch(\Exception $ex)
+        {
+            return $this->errorResponse($ex, 404);
+        }
     }
 }

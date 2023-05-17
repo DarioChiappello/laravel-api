@@ -42,6 +42,10 @@ abstract class BaseService
     public function delete($id)
     {
         $model = $this->model->find($id);
+        if(!$model)
+        {
+            return ["message" => "Not found", "code" => 404];
+        }
         $model->delete();
         return $model;
     }

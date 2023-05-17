@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ModelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,3 +55,6 @@ Route::controller(OrderController::class)->group(function () {
     Route::post('/orders/{order}/reject', 'reject');
     Route::post('/orders/{order}/deliver', 'deliver');
 });
+
+Route::get('/models/{model}', [ModelController::class, 'index']);
+Route::get('/models/{model}/{id}', [ModelController::class, 'show']);

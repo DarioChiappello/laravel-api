@@ -27,11 +27,17 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-        $validateRequest = $this->productService->validateRequest($request);
-
-        $product = $this->productService->create($request->all());
-
-        return $this->successResponse($product);
+        try
+        {
+            $validateRequest = $this->productService->validateRequest($request);
+            $product = $this->productService->create($request->all());
+            return $this->successResponse($product);
+        }
+        catch(\Exception $ex)
+        {
+            return $this->errorResponse($ex);
+        }
+        
     }
 
     public function show($product)
@@ -43,16 +49,28 @@ class ProductController extends Controller
 
     public function update(ProductRequest $request, $product)
     {
-        $validateRequest = $this->productService->validateRequest($request);
-        $product = $this->productService->update($product, $request->all());
-        return $this->successResponse($product);
+        try
+        {
+            $validateRequest = $this->productService->validateRequest($request);
+            $product = $this->productService->update($product, $request->all());
+            return $this->successResponse($product);
+        }
+        catch(\Exception $ex)
+        {
+            return $this->errorResponse($ex);
+        }
     }
 
     public function destroy($product)
     {
-        $product = $this->productService->delete($product);
-
-        return $this->successResponse($product); 
+        try
+        {
+            $product = $this->productService->delete($product);
+            return $this->successResponse($product); 
+        }
+        catch(\Exception $ex)
+        {
+            return $this->errorResponse($ex);
+        }
     }
-
 }

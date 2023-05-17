@@ -26,12 +26,17 @@ class OrderController extends Controller
     }
 
     public function store(OrderRequest $request)
-    {
-        $validateRequest = $this->orderService->validateRequest($request);
-
-        $order = $this->orderService->processOrder($request->all());
-
-        return $this->successResponse($order);
+    {      
+        try
+        {
+            $validateRequest = $this->orderService->validateRequest($request);
+            $order = $this->orderService->processOrder($request->all());
+            return $this->successResponse($order);
+        }
+        catch(\Exception $ex)
+        {
+            return $this->errorResponse($ex);
+        }
     }
 
     public function show($order)
@@ -43,16 +48,29 @@ class OrderController extends Controller
 
     public function update(OrderRequest $request, $order)
     {
-        $validateRequest = $this->orderService->validateRequest($request);
-        $order = $this->orderService->processOrder($request->all(), "PUT", $order);
-        return $this->successResponse($order);
+        try
+        {
+            $validateRequest = $this->orderService->validateRequest($request);
+            $order = $this->orderService->processOrder($request->all(), "PUT", $order);
+            return $this->successResponse($order);
+        }
+        catch(\Exception $ex)
+        {
+            return $this->errorResponse($ex);
+        }
     }
 
     public function destroy($order)
     {
-        $order = $this->orderService->delete($order);
-
-        return $this->successResponse($order); 
+        try
+        {
+            $order = $this->orderService->delete($order);
+            return $this->successResponse($order);
+        }
+        catch(\Exception $ex)
+        {
+            return $this->errorResponse($ex);
+        } 
     }
 
     public function confirm($order)
